@@ -6,21 +6,18 @@ body {
 }
 
 #puzzle-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 5px;
   margin: 20px auto;
-  max-width: 300px;
+  width: fit-content;
 }
 
-.block {
-  width: 60px;
-  height: 60px;
-  margin: 5px;
-  background-color: #4caf50;
-  color: white;
-  font-size: 24px;
-  line-height: 60px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+.bloco-imagem {
+  width: var(--tamanho-bloco);
+  height: var(--tamanho-bloco);
+  object-fit: cover;
+  background-color: #ddd;
+  border: 2px solid #999;
+  box-sizing: border-box;
+  display: block;
 }

@@ -2,13 +2,12 @@ const puzzleContainer = document.getElementById("puzzle-container");
 const statusText = document.getElementById("status");
 const facil = document.getElementById("butFacil");
 const medio = document.getElementById("butMedio");
-const dificil = document.getElementById("butDificil");
 const recordMaior = document.getElementById("recordeMaior");
 const recordMenor = document.getElementById("recordeMenor");
+const instrucao = document.getElementById("instrucao");
 
 let facCheck = true;
 let medCheck = false;
-let difCheck = false;
 
 let contCerto = 0;
 let quantCerto;
@@ -23,30 +22,31 @@ let dificuldadeAtual = "facil";
 // Recordes separados por dificuldade
 let recordes = {
   facil: { maior: 0, menor: Infinity },
-  medio: { maior: 0, menor: Infinity },
-  dificil: { maior: 0, menor: Infinity }
+  medio: { maior: 0, menor: Infinity }
 };
 
 function getDificuldade() {
-  return facCheck ? "facil" : medCheck ? "medio" : "dificil";
+  return facCheck ? "facil" : "medio";
 }
 
 function gerarImagens() {
-  const certo = { src: "imagens/certo.jpg", correto: true };
-  const certo2 = { src: "imagens/certo.png", correto: true };
-  const certo3 = { src: "imagens/certo2.png", correto: true };
-  const certo4 = { src: "imagens/CERTO3.png", correto: true };
-  const errado2 = { src: "imagens/erado2.jpg", correto: false };
-
+  imagens = [];
+  
   if (facCheck) {
-    imagens = [certo, certo2, errado2];
-  } else if (medCheck) {
-    imagens = [certo, certo2, errado2, certo3, errado2, certo4];
-  } else {
-    imagens = [certo];
-    for (let i = 0; i < 11; i++) {
-      imagens.push({ src: i % 2 === 0 ? "imagens/erado.jpg" : "imagens/erado2.jpg", correto: false });
+    for (let i = 1; i <= 9; i++) {
+      const num = i.toString().padStart(3, '0');
+      imagens.push({ src: `3x3/${num}.png`, correto: false });
     }
+    puzzleContainer.style.gridTemplateColumns = "repeat(3, 150px)"; /*ajustando o tamanho das imagens dinamicamente*/
+    document.documentElement.style.setProperty('--tamanho-bloco', '150px');
+    
+  } else if (medCheck) {
+    for (let i = 1; i <= 25; i++) {
+      const num = i.toString().padStart(3, '0');
+      imagens.push({ src: `5x5/${num}.png`, correto: false });
+    }
+    puzzleContainer.style.gridTemplateColumns = "repeat(5, 120px)"; /*ajustando o tamanho das imagens dinamicamente*/
+    document.documentElement.style.setProperty('--tamanho-bloco', '120px');
   }
 }
 
@@ -139,10 +139,14 @@ facil.addEventListener("click", () => {
   pararSeEstiverRodando();
   facCheck = true;
   medCheck = false;
-  difCheck = false;
+  instrucao.textContent = "Encontre os elefantes";
   statusText.textContent = "";
   recordMaior.textContent = "";
   recordMenor.textContent = "";
+  document.body.style.backgroundImage = "url('3x3/savana.png')";
+  document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundPosition = "center";
+  document.body.style.backgroundAttachment = "fixed";
   gerarImagens();
   renderImagens(imagens);
 });
@@ -151,22 +155,12 @@ medio.addEventListener("click", () => {
   pararSeEstiverRodando();
   facCheck = false;
   medCheck = true;
-  difCheck = false;
+  instrucao.textContent = "Encontre os macacos";
   statusText.textContent = "";
   recordMaior.textContent = "";
   recordMenor.textContent = "";
-  gerarImagens();
-  renderImagens(imagens);
-});
-
-dificil.addEventListener("click", () => {
-  pararSeEstiverRodando();
-  facCheck = false;
-  medCheck = false;
-  difCheck = true;
-  statusText.textContent = "";
-  recordMaior.textContent = "";
-  recordMenor.textContent = "";
+  document.body.style.backgroundImage = "none";
+  document.body.style.backgroundColor = "#f0f8ff";
   gerarImagens();
   renderImagens(imagens);
 });
