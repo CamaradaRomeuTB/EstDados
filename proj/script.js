@@ -17,6 +17,7 @@ let attempts = 0;
 let solving = false;
 let index = 0;
 let mouseDentro = false;
+let shuffleInterval = null;
 let dificuldadeAtual = "facil";
 
 // Recordes separados por dificuldade
@@ -36,16 +37,22 @@ function gerarImagens() {
   if (facCheck) {
     // Modo Fácil: 3x3 = 9 imagens
     for (let i = 1; i <= 9; i++) {
-      const num = i.toString().padStart(3, '0'); // Formata número com zeros à esquerda (001, 002, etc)
-      imagens.push({ src: `3x3/${num}.png`, correto: false }); // Adiciona imagem ao array
+      const num = i.toString().padStart(3, '0');
+      if(num == "001" || num == "002")
+        imagens.push({ src: `3x3/${num}.png`, correto: true, clicado: false });
+      else
+        imagens.push({ src: `3x3/${num}.png`, correto: false, clicado: false });
     }
     puzzleContainer.style.gridTemplateColumns = "repeat(3, 150px)"; // Define grid 3 colunas de 150px
     
   } else if (medCheck) {
     // Modo Médio: 5x5 = 25 imagens
     for (let i = 1; i <= 25; i++) {
-      const num = i.toString().padStart(3, '0'); // Formata número com zeros à esquerda
-      imagens.push({ src: `5x5/${num}.png`, correto: false }); // Adiciona imagem ao array
+      const num = i.toString().padStart(3, '0');
+      if(num == "002" || num == "003" || num == "004" || num == "007" || num == "012" || num == "017")
+        imagens.push({ src: `5x5/${num}.png`, correto: true });
+      else
+        imagens.push({ src: `5x5/${num}.png`, correto: false });
     }
     puzzleContainer.style.gridTemplateColumns = "repeat(5, 120px)"; // Define grid 5 colunas de 120px
   }
@@ -60,28 +67,31 @@ function shuffle(arr) {
 
 function renderImagens(arr) {
   puzzleContainer.innerHTML = "";
+  contCerto = 0;
   if(facCheck)
     quantCerto = 2;
   else if(medCheck)
-    quantCerto = 4;
+    quantCerto = 6;
     
   const tamanho = facCheck ? '150px' : '120px';
   
   arr.forEach(obj => {
+    obj.clicado = false;
     const img = document.createElement("img");
     img.src = obj.src;
     img.className = "bloco-imagem";
     img.style.width = tamanho;
     img.style.height = tamanho;
     img.addEventListener("click", () => {
-      if (obj.correto) {
+      if (obj.correto && obj.clicado == false) {
         contCerto++;
+        obj.clicado = true;
+        img.style.border = "4px solid green";
         if(contCerto == quantCerto)
         {
           statusText.textContent = `Você clicou na imagens corretas! 🎉`;
           solving = false;
           atualizarRecordes();
-          img.style.border = "4px solid green";
         }
       }
     });
@@ -96,8 +106,8 @@ function atualizarRecordes() {
   if (attempts > rec.maior) rec.maior = attempts;
   if (attempts < rec.menor) rec.menor = attempts;
 
-  recordMaior.textContent = `Recorde de maior (${tipo}): ${rec.maior}`;
-  recordMenor.textContent = `Recorde de menor (${tipo}): ${rec.menor}`;
+  //recordMaior.textContent = `Recorde de maior (${tipo}): ${rec.maior}`;
+  //recordMenor.textContent = `Recorde de menor (${tipo}): ${rec.menor}`;
 }
 
 function bogoSortVisual() {
@@ -118,7 +128,6 @@ function bogoSortVisual() {
   attempts++;
   index++;
   renderImagens(imagens);
-  statusText.textContent = `Tentativas: ${attempts}`;
   setTimeout(bogoSortVisual, 100);
 }
 
@@ -131,13 +140,46 @@ puzzleContainer.addEventListener("mouseenter", () => {
   dificuldadeAtual = getDificuldade();
 
   gerarImagens();
-  bogoSortVisual();
+  renderImagens(imagens);
+
+  const intervalo = facCheck ? 1000 : 3000;
+  // iniciar embaralhamento a cada 2 segundos
+  if (shuffleInterval) clearInterval(shuffleInterval);
+  shuffleInterval = setInterval(() => {
+    if (!mouseDentro || !solving) return;
+
+    if (getDificuldade() !== dificuldadeAtual) {
+      clearInterval(shuffleInterval);
+      shuffleInterval = null;
+      solving = false;
+      statusText.textContent = "Dificuldade alterada. Algoritmo interrompido.";
+      return;
+    }
+
+    shuffle(imagens);
+    attempts++;
+    renderImagens(imagens);
+  }, intervalo);
+});
+
+puzzleContainer.addEventListener("mouseleave", () => {
+  // para o embaralhamento ao sair com o mouse
+  mouseDentro = false;
+  solving = false;
+  if (shuffleInterval) {
+    clearInterval(shuffleInterval);
+    shuffleInterval = null;
+  }
 });
 
 function pararSeEstiverRodando() {
   if (solving) {
     solving = false;
     mouseDentro = false;
+    if (shuffleInterval) {
+      clearInterval(shuffleInterval);
+      shuffleInterval = null;
+    }
   }
 }
 
