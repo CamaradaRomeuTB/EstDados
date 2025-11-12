@@ -30,10 +30,12 @@ function getDificuldade() {
   return facCheck ? "facil" : "medio";
 }
 
+// Gera o array de imagens baseado na dificuldade escolhida
 function gerarImagens() {
-  imagens = [];
+  imagens = []; // Limpa o array de imagens
   
   if (facCheck) {
+    // Modo Fácil: 3x3 = 9 imagens
     for (let i = 1; i <= 9; i++) {
       const num = i.toString().padStart(3, '0');
       if(num == "001" || num == "002")
@@ -41,10 +43,10 @@ function gerarImagens() {
       else
         imagens.push({ src: `3x3/${num}.png`, correto: false, clicado: false });
     }
-    puzzleContainer.style.gridTemplateColumns = "repeat(3, 150px)"; /*ajustando o tamanho das imagens dinamicamente*/
-    document.documentElement.style.setProperty('--tamanho-bloco', '150px');
+    puzzleContainer.style.gridTemplateColumns = "repeat(3, 150px)"; // Define grid 3 colunas de 150px
     
   } else if (medCheck) {
+    // Modo Médio: 5x5 = 25 imagens
     for (let i = 1; i <= 25; i++) {
       const num = i.toString().padStart(3, '0');
       if(num == "002" || num == "003" || num == "004" || num == "007" || num == "012" || num == "017")
@@ -52,8 +54,7 @@ function gerarImagens() {
       else
         imagens.push({ src: `5x5/${num}.png`, correto: false });
     }
-    puzzleContainer.style.gridTemplateColumns = "repeat(5, 120px)"; /*ajustando o tamanho das imagens dinamicamente*/
-    document.documentElement.style.setProperty('--tamanho-bloco', '120px');
+    puzzleContainer.style.gridTemplateColumns = "repeat(5, 120px)"; // Define grid 5 colunas de 120px
   }
 }
 
@@ -71,11 +72,16 @@ function renderImagens(arr) {
     quantCerto = 2;
   else if(medCheck)
     quantCerto = 6;
+    
+  const tamanho = facCheck ? '150px' : '120px';
+  
   arr.forEach(obj => {
     obj.clicado = false;
     const img = document.createElement("img");
     img.src = obj.src;
     img.className = "bloco-imagem";
+    img.style.width = tamanho;
+    img.style.height = tamanho;
     img.addEventListener("click", () => {
       if (obj.correto && obj.clicado == false) {
         contCerto++;
@@ -189,6 +195,7 @@ facil.addEventListener("click", () => {
   document.body.style.backgroundSize = "cover";
   document.body.style.backgroundPosition = "center";
   document.body.style.backgroundAttachment = "fixed";
+  puzzleContainer.classList.add('active');
   gerarImagens();
   renderImagens(imagens);
 });
@@ -203,9 +210,11 @@ medio.addEventListener("click", () => {
   recordMenor.textContent = "";
   document.body.style.backgroundImage = "none";
   document.body.style.backgroundColor = "#f0f8ff";
+  puzzleContainer.classList.add('active');
   gerarImagens();
   renderImagens(imagens);
 });
 
-gerarImagens();
-renderImagens(imagens);
+// Não gerar imagens no início
+// gerarImagens();
+// renderImagens(imagens);

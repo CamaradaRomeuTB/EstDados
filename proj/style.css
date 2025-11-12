@@ -1,23 +1,145 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  background-color: #f0f8ff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
   padding: 20px;
+  color: #333;
+  transition: background 0.5s ease;
+}
+
+h1 {
+  color: #ae00ff;
+  font-size: 3em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  color: #2f00ff;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  font-weight: 400;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+button {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1em;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+#butFacil {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+#butMedio {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+}
+
+#instrucao {
+  color: #2f00ff;
+  font-size: 1.3em;
+  margin: 25px 0;
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bolder;
 }
 
 #puzzle-container {
-  display: grid;
-  gap: 5px;
-  margin: 20px auto;
+  display: none;
+  grid-template-columns: repeat(3, 150px);
+  gap: 8px;
+  margin: 30px auto;
   width: fit-content;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#puzzle-container.active {
+  display: grid;
 }
 
 .bloco-imagem {
-  width: var(--tamanho-bloco);
-  height: var(--tamanho-bloco);
+  width: 150px;
+  height: 150px;
   object-fit: cover;
-  background-color: #ddd;
-  border: 2px solid #999;
+  background-color: #f5f5f5;
+  border: 3px solid #fff;
+  border-radius: 10px;
   box-sizing: border-box;
   display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.bloco-imagem:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: #FF9800;
+}
+
+#status {
+  color: #2f00ff;
+  font-size: 1.4em;
+  margin: 25px 0;
+  font-weight: 600;
+  padding: 12px 25px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#recordeMaior,
+#recordeMenor {
+  color: #2f00ff;
+  font-size: 1.1em;
+  margin: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
 }
