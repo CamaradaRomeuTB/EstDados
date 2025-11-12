@@ -7,10 +7,14 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Puzzle da Sorte</h1>
-    <h2>Dificuldade</h2>
-    <button id="butFacil">Fácil: 3x3 </button>
-    <button id="butMedio">Médio: 5x5 elementos</button>
+    <h1>🎮 Puzzle da Sorte</h1>
+    <h2>Escolha a Dificuldade</h2>
+    
+    <div class="button-container">
+        <button id="butFacil">🐘 Fácil: 3x3</button>
+        <button id="butMedio">🐵 Médio: 5x5</button>
+    </div>
+    
     <p id="instrucao">Reorganize os blocos na ordem correta... com sorte!</p>
 
     <div id="puzzle-container">
@@ -18,8 +22,10 @@
 
     <p id="status">Tentativas: 0</p>
 
-    <div id="recordeMaior"></div>
-    <div id="recordeMenor"></div>
+    <div>
+        <div id="recordeMaior"></div>
+        <div id="recordeMenor"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
