@@ -49,7 +49,7 @@ function gerarImagens() {
     // Modo Médio: 5x5 = 25 imagens
     for (let i = 1; i <= 25; i++) {
       const num = i.toString().padStart(3, '0');
-      if(num == "002" || num == "003" || num == "004" || num == "007" || num == "012" || num == "017")
+      if(num == "002" || num == "003" || num == "004" || num == "007" || num == "023" || num == "017")
         imagens.push({ src: `5x5/${num}.png`, correto: true });
       else
         imagens.push({ src: `5x5/${num}.png`, correto: false });
@@ -59,6 +59,7 @@ function gerarImagens() {
 }
 
 function shuffle(arr) {
+  attempts++;
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -72,7 +73,7 @@ function renderImagens(arr) {
     quantCerto = 2;
   else if(medCheck)
     quantCerto = 6;
-    
+
   const tamanho = facCheck ? '150px' : '120px';
   
   arr.forEach(obj => {
@@ -106,8 +107,8 @@ function atualizarRecordes() {
   if (attempts > rec.maior) rec.maior = attempts;
   if (attempts < rec.menor) rec.menor = attempts;
 
-  //recordMaior.textContent = `Recorde de maior (${tipo}): ${rec.maior}`;
-  //recordMenor.textContent = `Recorde de menor (${tipo}): ${rec.menor}`;
+  recordMaior.textContent = `Recorde de maior (${tipo}): ${rec.maior}`;
+  recordMenor.textContent = `Recorde de menor (${tipo}): ${rec.menor}`;
 }
 
 function bogoSortVisual() {
@@ -125,7 +126,6 @@ function bogoSortVisual() {
   }
 
   shuffle(imagens);
-  attempts++;
   index++;
   renderImagens(imagens);
   setTimeout(bogoSortVisual, 100);
@@ -135,7 +135,6 @@ puzzleContainer.addEventListener("mouseenter", () => {
   if (solving) return;
   solving = true;
   mouseDentro = true;
-  attempts = 0;
   index = 0;
   dificuldadeAtual = getDificuldade();
 
@@ -143,7 +142,7 @@ puzzleContainer.addEventListener("mouseenter", () => {
   renderImagens(imagens);
 
   const intervalo = facCheck ? 1000 : 3000;
-  // iniciar embaralhamento a cada 2 segundos
+  
   if (shuffleInterval) clearInterval(shuffleInterval);
   shuffleInterval = setInterval(() => {
     if (!mouseDentro || !solving) return;
@@ -157,7 +156,6 @@ puzzleContainer.addEventListener("mouseenter", () => {
     }
 
     shuffle(imagens);
-    attempts++;
     renderImagens(imagens);
   }, intervalo);
 });
