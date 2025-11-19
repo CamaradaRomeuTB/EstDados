@@ -15,6 +15,7 @@ O algoritmo do jogo embaralhará as imagens periodicamente, este período é dif
 No modo fácil o usuário deverá encontrar os dois elafantes no meio de imagens da savana e de outros animais. O algoritmo de ordenação (BOGOSORT) irá embaralhar todas as imganes a cada um segundo.
 
 4. MODO 5x5
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a2a61451-9434-42bb-a59c-88b2616fb376" />
 No modo difícil o usuário deverá encontrar seis macacos no meio de imagens da floresta e de outros animais. O algoritmo de ordenação (BOGOSORT) irá embaralhar todas as imagens a cada três segundos.
 
-5. 
+6. 
